@@ -11,16 +11,13 @@ namespace WebStore
 {
     public class Program
     {
-        public static void Main(string[] args)
-        {
-            CreateHostBuilder(args).Build().Run();
-        }
+        public static void Main(string[] args) => CreateHostBuilder(args).Build().Run();
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder =>
+                .ConfigureWebHostDefaults(host =>
                 {
-                    webBuilder.UseStartup<Startup>();
+                    host.UseStartup<Startup>();
                 });
     }
 }

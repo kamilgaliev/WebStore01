@@ -31,6 +31,7 @@ namespace WebStore.Controllers
             return NotFound();
         }
 
+        
         #region Edit
         public IActionResult Edit(int id)
         {
@@ -71,6 +72,7 @@ namespace WebStore.Controllers
         }
         #endregion
 
+        #region Delete
         public IActionResult Delete(int id)
         {
             if(id <= 0) return BadRequest();
@@ -96,5 +98,6 @@ namespace WebStore.Controllers
 
             return RedirectToAction("Index");
         }
+        #endregion
     }
 }

@@ -27,6 +27,8 @@ namespace WebStore
             //services.AddMvc();
             services.AddTransient<IEmployeesData, InMemoryEmployessData>();
 
+            services.AddTransient<IProductData, InMemoryProductData>();
+
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
         }
 
@@ -45,11 +47,6 @@ namespace WebStore
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapGet("/greetings", async context =>
-                {
-                    await context.Response.WriteAsync(greetings);
-                });
-
                 endpoints.MapControllerRoute(
                     "default",
                     "{controller=Home}/{action=Index}/{id?}");

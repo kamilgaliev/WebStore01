@@ -57,6 +57,8 @@ namespace WebStore.Controllers
         {
             if(model is null) throw new ArgumentNullException(nameof(model));
 
+            if (!ModelState.IsValid) return View(model);
+
             var employee = new Employee
             {
                 Id = model.Id,

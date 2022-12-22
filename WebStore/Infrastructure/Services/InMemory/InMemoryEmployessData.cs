@@ -5,7 +5,7 @@ using WebStore.Data;
 using WebStore.Infrastructure.Interfaces;
 using WebStore.Models;
 
-namespace WebStore.Infrastructure.Services
+namespace WebStore.Infrastructure.Services.InMemory
 {
     public class InMemoryEmployessData : IEmployeesData
     {
@@ -23,8 +23,8 @@ namespace WebStore.Infrastructure.Services
         {
             if (employee is null) throw new ArgumentNullException(nameof(employee));
 
-            if(_Employees.Contains(employee)) return employee.Id;
-            
+            if (_Employees.Contains(employee)) return employee.Id;
+
             employee.Id = ++_CurrentMaxId;
             _Employees.Add(employee);
             return employee.Id;

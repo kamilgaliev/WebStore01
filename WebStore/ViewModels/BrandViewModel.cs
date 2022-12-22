@@ -7,5 +7,7 @@
         public string Name { get; init; }
 
         public int Order { get; init; }
+
+        public int ProductsCount { get; init; }
     }
 }

@@ -3,7 +3,7 @@
 <h2>Категории</h2>
 <div class="panel-group category-products" id="accordian">
     <!--category-productsr-->
-    @foreach (var parent_section in Model)
+    @foreach (var parent_section in Model.Where(s => s.TotalProductsCount > 0))
     {
         if (parent_section.ChildSections.Count > 0)
         {
@@ -19,7 +19,7 @@
                 <div id="@parent_section.GetHashCode()" class="panel-collapse collapse">
                     <div class="panel-body">
                         <ul>
-                            @foreach (var child_section in parent_section.ChildSections)
+                            @foreach (var child_section in parent_section.ChildSections.Where(c => c.TotalProductsCount > 0))
                             {
                                 <li>
                                     <a asp-controller="Catalog" asp-action="Index" asp-route-SectionId="@child_section.Id">

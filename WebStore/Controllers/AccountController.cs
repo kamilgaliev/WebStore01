@@ -1,5 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using System;
+using System.Linq;
 using System.Threading.Tasks;
 using WebStore.Domain.Entities.Identity;
 using WebStore.ViewModels;
@@ -10,11 +13,13 @@ namespace WebStore.Controllers
     {
         private readonly UserManager<User> _UserManager;
         private readonly SignInManager<User> _SignInManager;
+        private readonly ILogger<AccountController> _Logger;
 
-        public AccountController(UserManager<User> UserManager, SignInManager<User> SignInManager)
+        public AccountController(UserManager<User> UserManager, SignInManager<User> SignInManager, ILogger<AccountController> Logger)
         {
             _UserManager = UserManager;
             _SignInManager = SignInManager;
+            _Logger = Logger;
         }
 
         #region Register
@@ -23,6 +28,7 @@ namespace WebStore.Controllers
         [HttpPost, ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterUserViewModel Model)
         {
+            _Logger.LogInformation("Регистрация пользователя {0}, время: {1}", Model.UserName, DateTime.Now);
             if(!ModelState.IsValid) return View(Model);
 
             var user = new User
@@ -30,16 +36,21 @@ namespace WebStore.Controllers
                 UserName = Model.UserName
             };
 
-            var registration_reuslt = await _UserManager.CreateAsync(user, Model.Password);
+            var registration_result = await _UserManager.CreateAsync(user, Model.Password);
 
-            if(registration_reuslt.Succeeded)
+            if(registration_result.Succeeded)
             {
+                _Logger.LogInformation("Пользователь {0} успешно зарегистрирован, время: {1}", Model.UserName, DateTime.Now);
                 await _SignInManager.SignInAsync(user, false);
 
                 return RedirectToAction("Index", "Home");
             }
 
-            foreach (var error in registration_reuslt.Errors)
+            _Logger.LogWarning("В процессе регистрации пользователя {0}, возникли ошибки:  {1} . Время: {2}", Model.UserName, 
+                string.Join(',', registration_result.Errors.Select(e => e.Description)),
+                DateTime.Now);
+
+            foreach (var error in registration_result.Errors)
                 ModelState.AddModelError("", error.Description);
 
             return View(Model);
@@ -52,6 +63,7 @@ namespace WebStore.Controllers
         [HttpPost, ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginViewModel Model)
         {
+            _Logger.LogInformation("Вход пользователя {0} в систему. Время: {1}", Model.UserName, DateTime.Now);
             if (!ModelState.IsValid) return View(Model);
 
             var login_result = await _SignInManager.PasswordSignInAsync(
@@ -67,9 +79,11 @@ namespace WebStore.Controllers
 
             if (login_result.Succeeded)
             {
+                _Logger.LogInformation("Пользовтель {0} вошел в систему. Время: {1}", Model.UserName, DateTime.Now);
                 return LocalRedirect(Model.ReturnUrl ?? "/");
             }
 
+            
             ModelState.AddModelError("", "Неверное имя пользователя или пароль!");
 
             return View(Model);

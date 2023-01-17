@@ -1,4 +1,6 @@
-﻿<ul class="nav navbar-nav collapse navbar-collapse">
+﻿@using WebStore.Domain.Entities.Identity
+
+<ul class="nav navbar-nav collapse navbar-collapse">
     <li><a asp-controller="Home" asp-action="Index" class="active">Главная</a></li>
     <li class="dropdown">
         <a href="~/#">Магазин<i class="fa fa-angle-down"></i></a>
@@ -19,7 +21,7 @@
     </li>
     <li><a asp-controller="Error404" asp-action="Index">404</a></li>
     <li><a asp-controller="ContactUs" asp-action="Index">Контакты</a></li>
-    @if (User.IsInRole(role: "Administrators"))
+    @if (User.IsInRole(Role.Administrator))
     {
         <li><a asp-controller="Employees" asp-action="Index">Сотрудники</a></li>
     }

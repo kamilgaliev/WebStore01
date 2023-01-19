@@ -1,16 +1,19 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WebStore.Data;
+using WebStore.Domain.Entities.Identity;
 using WebStore.Infrastructure.Interfaces;
 using WebStore.Models;
 using WebStore.ViewModels;
 
 namespace WebStore.Controllers
 {
+    [Authorize(Roles = Role.Administrator)]
     public class EmployeesController : Controller
     {
         private readonly IEmployeesData _EmployeesData;

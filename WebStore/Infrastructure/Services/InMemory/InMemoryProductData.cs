@@ -25,5 +25,7 @@ namespace WebStore.Infrastructure.Services.InMemory
 
             return query;
         }
+
+        public Product GetProductById(int id) => TestData.Products.FirstOrDefault(s => s.Id == id);
     }
 }

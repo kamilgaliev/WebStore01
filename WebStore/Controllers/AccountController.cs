@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -9,6 +10,7 @@ using WebStore.ViewModels;
 
 namespace WebStore.Controllers
 {
+    [Authorize]
     public class AccountController : Controller
     {
         private readonly UserManager<User> _UserManager;
@@ -23,8 +25,10 @@ namespace WebStore.Controllers
         }
 
         #region Register
+        [AllowAnonymous]
         public IActionResult Register() => View(new RegisterUserViewModel());
 
+        [AllowAnonymous]
         [HttpPost, ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterUserViewModel Model)
         {
@@ -41,6 +45,11 @@ namespace WebStore.Controllers
             if(registration_result.Succeeded)
             {
                 _Logger.LogInformation("Пользователь {0} успешно зарегистрирован, время: {1}", Model.UserName, DateTime.Now);
+
+                await _UserManager.AddToRoleAsync(user, Role.User);
+
+                _Logger.LogInformation("Пользователь {0} наделен ролью {1}", Model.UserName, Role.User);
+
                 await _SignInManager.SignInAsync(user, false);
 
                 return RedirectToAction("Index", "Home");
@@ -58,8 +67,10 @@ namespace WebStore.Controllers
         #endregion
 
         #region Login
+        [AllowAnonymous]
         public IActionResult Login(string ReturnUrl) => View( new LoginViewModel { ReturnUrl = ReturnUrl});
 
+        [AllowAnonymous]
         [HttpPost, ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(LoginViewModel Model)
         {

@@ -11,5 +11,7 @@ namespace WebStore.Domain
         public int? SectionId { get; init; }
 
         public int? BrandId { get; init; }
+
+        public int[] Ids { get; set; }
     }
 }

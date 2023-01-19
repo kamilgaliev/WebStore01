@@ -11,6 +11,7 @@ using WebStore.DAL.Context;
 using WebStore.Data;
 using WebStore.Domain.Entities.Identity;
 using WebStore.Infrastructure.Interfaces;
+using WebStore.Infrastructure.Services.InCookies;
 using WebStore.Infrastructure.Services.InMemory;
 using WebStore.Infrastructure.Services.InSQL;
 
@@ -33,6 +34,8 @@ namespace WebStore
             services.AddTransient<WebStoreDbInitializer>();
 
             services.AddTransient<IEmployeesData, InMemoryEmployessData>();
+
+            services.AddTransient<ICartService, InCookiesCartService>();
 
             services.AddIdentity<User,Role>().
                 AddEntityFrameworkStores<WebStoreDB>().

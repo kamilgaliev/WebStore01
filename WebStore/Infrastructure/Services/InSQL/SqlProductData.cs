@@ -27,7 +27,9 @@ namespace WebStore.Infrastructure.Services.InSQL
 
         public IEnumerable<Product> GetProducts(ProductFilter filter = null)
         {
-            IQueryable<Product> query = _db.Products;
+            IQueryable<Product> query = _db.Products
+                .Include(product => product.Brand)
+                .Include(product => product.Section);
 
             if(filter?.Ids?.Length > 0)
                 query = query.Where(s => filter.Ids.Contains(s.Id));

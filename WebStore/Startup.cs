@@ -37,7 +37,7 @@ namespace WebStore
 
             services.AddTransient<ICartService, InCookiesCartService>();
 
-            services.AddIdentity<User,Role>().
+            services.AddIdentity<User, Role>().
                 AddEntityFrameworkStores<WebStoreDB>().
                 AddDefaultTokenProviders();
 
@@ -93,10 +93,14 @@ namespace WebStore
             app.UseAuthentication();
             app.UseAuthorization();
 
-            
+
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapControllerRoute(
+                    name: "areas",
+                    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+
                 endpoints.MapControllerRoute(
                     "default",
                     "{controller=Home}/{action=Index}/{id?}");

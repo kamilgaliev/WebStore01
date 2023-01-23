@@ -29,7 +29,9 @@ namespace WebStore
         public void ConfigureServices(IServiceCollection services)
         {
             //services.AddMvc();
-            services.AddDbContext<WebStoreDB>(opt => opt.UseSqlServer(Configuration.GetConnectionString("Default")));
+            services.AddDbContext<WebStoreDB>(opt => 
+                opt.UseSqlServer(Configuration.GetConnectionString("Default"))
+                   .UseLazyLoadingProxies());
 
             services.AddTransient<WebStoreDbInitializer>();
 

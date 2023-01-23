@@ -31,7 +31,7 @@ namespace WebStore.Infrastructure.Services.InSQL
                 .Include(product => product.Brand)
                 .Include(product => product.Section);
 
-            if(filter?.Ids?.Length > 0)
+            if (filter?.Ids?.Length > 0)
                 query = query.Where(s => filter.Ids.Contains(s.Id));
             else
             {

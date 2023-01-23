@@ -8,6 +8,6 @@ namespace WebStore.Domain.Entities
     {
         public int Order { get; set; }
 
-        public ICollection<Product> Products { get; set; }
+        public virtual ICollection<Product> Products { get; set; }
     }
 }

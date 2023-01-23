@@ -38,6 +38,8 @@ namespace WebStore
             services.AddTransient<IEmployeesData, InMemoryEmployessData>();
 
             services.AddTransient<ICartService, InCookiesCartService>();
+            services.AddTransient<IOrderService, SqlOrderService>();
+
 
             services.AddIdentity<User, Role>().
                 AddEntityFrameworkStores<WebStoreDB>().

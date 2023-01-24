@@ -18,7 +18,7 @@ namespace WebStore.Data
         private readonly RoleManager<Role> _RoleManager;
 
         public WebStoreDbInitializer(
-            WebStoreDB db, 
+            WebStoreDB db,
             ILogger<WebStoreDbInitializer> Logger,
             UserManager<User> UserManager,
             RoleManager<Role> RoleManager)
@@ -79,53 +79,112 @@ namespace WebStore.Data
 
             _Logger.LogInformation("Добавление секций...");
 
+            var products_section = TestData.Sections.Join(TestData.Products,
+                s => s.Id,
+                p => p.SectionId,
+                (section, product) => (section, product));
+
+            foreach (var (section, product) in products_section)
+            {
+                section.Products.Add(product);
+            }
+
+            var section_section = TestData.Sections.Join(TestData.Sections,
+                parent_section => parent_section.Id,
+                child_section => child_section.ParentId,
+                (parent, child) => (parent, child));
+
+            foreach (var (parent, child) in section_section)
+                child.Parent = parent;
+
+            var products_brand = TestData.Brands.Join(TestData.Products,
+               b => b.Id,
+               p => p.BrandId,
+               (brand, product) => (brand, product));
+
+            foreach (var (brand, product) in products_brand)
+            {
+                brand.Products.Add(product);
+            }
+
+
+            foreach (var product in TestData.Products)
+            {
+                product.Id = 0;
+                product.SectionId = 0;
+                product.BrandId = null;
+            }
+
+            foreach (var section in TestData.Sections)
+            {
+                section.Id = 0;
+                section.ParentId = null;
+            }
+
+            foreach (var brand in TestData.Brands)
+                brand.Id = 0;
+
             using (_db.Database.BeginTransaction())
             {
+                _db.Products.AddRange(TestData.Products);
                 _db.Sections.AddRange(TestData.Sections);
-
-                _db.Database.ExecuteSqlRaw("SET IDENTITY_INSERT [dbo].[Sections] ON");
+                _db.Brands.AddRange(TestData.Brands);
 
                 _db.SaveChanges();
-
-                _db.Database.ExecuteSqlRaw("SET IDENTITY_INSERT [dbo].[Sections] OFF");
-
                 _db.Database.CommitTransaction();
             }
+
+            //using (_db.Database.BeginTransaction())
+            //{
+            //    _db.Sections.AddRange(TestData.Sections);
+
+            //    _db.Database.ExecuteSqlRaw("SET IDENTITY_INSERT [dbo].[Sections] ON");
+
+            //    _db.SaveChanges();
+
+            //    _db.Database.ExecuteSqlRaw("SET IDENTITY_INSERT [dbo].[Sections] OFF");
+
+            //    _db.Database.CommitTransaction();
+            //}
 
             _Logger.LogInformation("Добавление секций выполнено успешно");
 
             _Logger.LogInformation("Добавление брендов...");
 
-            using (_db.Database.BeginTransaction())
-            {
-                _db.Brands.AddRange(TestData.Brands);
 
-                _db.Database.ExecuteSqlRaw("SET IDENTITY_INSERT [dbo].[Brands] ON");
 
-                _db.SaveChanges();
+            //using (_db.Database.BeginTransaction())
+            //{
+            //    _db.Brands.AddRange(TestData.Brands);
 
-                _db.Database.ExecuteSqlRaw("SET IDENTITY_INSERT [dbo].[Brands] OFF");
+            //    _db.Database.ExecuteSqlRaw("SET IDENTITY_INSERT [dbo].[Brands] ON");
 
-                _db.Database.CommitTransaction();
-            }
+            //    _db.SaveChanges();
+
+            //    _db.Database.ExecuteSqlRaw("SET IDENTITY_INSERT [dbo].[Brands] OFF");
+
+            //    _db.Database.CommitTransaction();
+            //}
 
             _Logger.LogInformation("Добавление брендов выполнено успешно");
 
 
             _Logger.LogInformation("Добавление товаров...");
 
-            using (_db.Database.BeginTransaction())
-            {
-                _db.Products.AddRange(TestData.Products);
 
-                _db.Database.ExecuteSqlRaw("SET IDENTITY_INSERT [dbo].[Products] ON");
 
-                _db.SaveChanges();
+            //using (_db.Database.BeginTransaction())
+            //{
+            //    _db.Products.AddRange(TestData.Products);
 
-                _db.Database.ExecuteSqlRaw("SET IDENTITY_INSERT [dbo].[Products] OFF");
+            //    _db.Database.ExecuteSqlRaw("SET IDENTITY_INSERT [dbo].[Products] ON");
 
-                _db.Database.CommitTransaction();
-            }
+            //    _db.SaveChanges();
+
+            //    _db.Database.ExecuteSqlRaw("SET IDENTITY_INSERT [dbo].[Products] OFF");
+
+            //    _db.Database.CommitTransaction();
+            //}
 
             _Logger.LogInformation("Добавление товаров выполнено успешно");
 
@@ -142,16 +201,16 @@ namespace WebStore.Data
             {
                 if (!await _RoleManager.RoleExistsAsync(RoleName))
                 {
-                    _Logger.LogInformation("Роль {0} отсутствует. Создаю...",RoleName);
+                    _Logger.LogInformation("Роль {0} отсутствует. Создаю...", RoleName);
                     await _RoleManager.CreateAsync(new Role { Name = RoleName });
-                    _Logger.LogInformation("Роль {0} создана успешно.",RoleName);
+                    _Logger.LogInformation("Роль {0} создана успешно.", RoleName);
                 }
             }
 
             await CheckRole(Role.Administrator);
             await CheckRole(Role.User);
 
-            if(await _UserManager.FindByNameAsync(User.Administrator) is null)
+            if (await _UserManager.FindByNameAsync(User.Administrator) is null)
             {
                 _Logger.LogInformation("Отсутствует учетная запись администратора");
                 var admin = new User
@@ -165,7 +224,7 @@ namespace WebStore.Data
                 {
                     _Logger.LogInformation("Учетная запись администратора создана успешно.");
                     await _UserManager.AddToRoleAsync(admin, Role.Administrator);
-                    _Logger.LogInformation("Учетная запись администратора наделена ролью {0}.",Role.Administrator);
+                    _Logger.LogInformation("Учетная запись администратора наделена ролью {0}.", Role.Administrator);
                 }
                 else
                 {

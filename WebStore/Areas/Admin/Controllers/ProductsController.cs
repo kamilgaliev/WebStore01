@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using WebStore.Domain.Entities.Identity;
 using WebStore.Infrastructure.Interfaces;
+using WebStore.Infrastructure.Mapping;
 
 namespace WebStore.Areas.Admin.Controllers
 {
@@ -28,6 +29,13 @@ namespace WebStore.Areas.Admin.Controllers
             var product = _ProductData.GetProductById(id);
             if (product is null) return NotFound();
             return View(product);
+        }
+
+        public IActionResult DeleteConfirmed(int id)
+        {
+            _ProductData.Delete(id);
+
+            return RedirectToAction("Index");
         }
     }
 }

@@ -13,5 +13,7 @@ namespace WebStore.Infrastructure.Interfaces
         IEnumerable<Product> GetProducts(ProductFilter filter = null);
 
         Product GetProductById(int id);
+
+        bool Delete(int id);
     }
 }

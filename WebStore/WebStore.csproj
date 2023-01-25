@@ -17,6 +17,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Areas\Admin\Infrastructure\Interfaces\" />
+    <Folder Include="Areas\Admin\Infrastructure\Mapping\" />
+    <Folder Include="Areas\Admin\Infrastructure\Services\InSQL\" />
     <Folder Include="Areas\Admin\Models\" />
     <Folder Include="wwwroot\lib\" />
     <Folder Include="wwwroot\admin\" />

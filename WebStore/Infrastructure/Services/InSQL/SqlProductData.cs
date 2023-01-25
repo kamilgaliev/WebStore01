@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -8,6 +9,7 @@ using WebStore.Domain;
 using WebStore.Domain.Entities;
 using WebStore.Domain.Entities.Orders;
 using WebStore.Infrastructure.Interfaces;
+using WebStore.Models;
 
 namespace WebStore.Infrastructure.Services.InSQL
 {
@@ -42,6 +44,10 @@ namespace WebStore.Infrastructure.Services.InSQL
 
         public IEnumerable<Brand> GetBrands() => _db.Brands.Include(b => b.Products);
 
+        public IEnumerable<Brand> GetAllBrands() => _db.Brands.ToList();
+
+        public IEnumerable<Section> GetAllSection() => _db.Sections.ToList();
+
         public Product GetProductById(int id) => _db.Products
             .Include(product => product.Brand)
             .Include(product => product.Section)
@@ -68,5 +74,24 @@ namespace WebStore.Infrastructure.Services.InSQL
         }
 
         public IEnumerable<Section> GetSections() => _db.Sections.Include(s => s.Products);
+
+        public void Update(Product product)
+        {
+            if (product is null) throw new ArgumentNullException(nameof(product));
+            //if (_db.Products.Contains(product)) return;
+
+            var db_item = GetProductById(product.Id);
+            if (db_item is null) return;
+
+            db_item.Id = product.Id;
+            db_item.Name = product.Name;
+            db_item.BrandId = product.BrandId;
+            db_item.SectionId = product.SectionId;
+            db_item.ImageUrl = product.ImageUrl;
+            db_item.Price = product.Price;
+
+            _db.Products.Update(db_item);
+            _db.SaveChanges();
+        }
     }
 }

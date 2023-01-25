@@ -32,5 +32,20 @@ namespace WebStore.Infrastructure.Services.InMemory
         {
             throw new System.NotImplementedException();
         }
+
+        public void Update(Product product)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public IEnumerable<Brand> GetAllBrands()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public IEnumerable<Section> GetAllSection()
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

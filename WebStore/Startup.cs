@@ -29,15 +29,19 @@ namespace WebStore
         public void ConfigureServices(IServiceCollection services)
         {
             //services.AddMvc();
-            services.AddDbContext<WebStoreDB>(opt => opt.UseSqlServer(Configuration.GetConnectionString("Default")));
+            services.AddDbContext<WebStoreDB>(opt => 
+                opt.UseSqlServer(Configuration.GetConnectionString("Default"))
+                   .UseLazyLoadingProxies());
 
             services.AddTransient<WebStoreDbInitializer>();
 
             services.AddTransient<IEmployeesData, InMemoryEmployessData>();
 
             services.AddTransient<ICartService, InCookiesCartService>();
+            services.AddTransient<IOrderService, SqlOrderService>();
 
-            services.AddIdentity<User,Role>().
+
+            services.AddIdentity<User, Role>().
                 AddEntityFrameworkStores<WebStoreDB>().
                 AddDefaultTokenProviders();
 
@@ -93,10 +97,14 @@ namespace WebStore
             app.UseAuthentication();
             app.UseAuthorization();
 
-            
+
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapControllerRoute(
+                    name: "areas",
+                    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+
                 endpoints.MapControllerRoute(
                     "default",
                     "{controller=Home}/{action=Index}/{id?}");

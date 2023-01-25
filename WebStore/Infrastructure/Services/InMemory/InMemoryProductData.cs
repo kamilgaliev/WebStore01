@@ -27,5 +27,25 @@ namespace WebStore.Infrastructure.Services.InMemory
         }
 
         public Product GetProductById(int id) => TestData.Products.FirstOrDefault(s => s.Id == id);
+
+        public bool Delete(int id)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void Update(Product product)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public IEnumerable<Brand> GetAllBrands()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public IEnumerable<Section> GetAllSection()
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

@@ -3,7 +3,7 @@ using WebStore.Domain;
 using WebStore.Domain.Entities;
 using WebStore.Domain.Models;
 
-namespace WebStore.Infrastructure.Interfaces
+namespace WebStore.Interfaces
 {
     public interface IProductData
     {

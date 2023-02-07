@@ -6,8 +6,8 @@ using System.Linq;
 using WebStore.Areas.Admin.ViewModels;
 using WebStore.Domain.Entities;
 using WebStore.Domain.Entities.Identity;
-using WebStore.Infrastructure.Interfaces;
-using WebStore.Infrastructure.Mapping;
+using WebStore.Interfaces;
+using WebStore.Services.Mapping;
 using WebStore.Domain.Models;
 using WebStore.Domain.ViewModels;
 

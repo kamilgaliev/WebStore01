@@ -4,14 +4,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WebStore.DAL.Context;
-using WebStore.Data;
+using WebStore.Services.Data;
 using WebStore.Domain;
 using WebStore.Domain.Entities;
 using WebStore.Domain.Entities.Orders;
-using WebStore.Infrastructure.Interfaces;
+using WebStore.Interfaces;
 using WebStore.Domain.Models;
 
-namespace WebStore.Infrastructure.Services.InSQL
+namespace WebStore.Services.InSQL
 {
     public class SqlProductData: IProductData
     {

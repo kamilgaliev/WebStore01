@@ -8,9 +8,9 @@ using WebStore.DAL.Context;
 using WebStore.Domain.Entities.Identity;
 using WebStore.Domain.Entities.Orders;
 using WebStore.Domain.ViewModels;
-using WebStore.Infrastructure.Interfaces;
+using WebStore.Interfaces;
 
-namespace WebStore.Infrastructure.Services.InSQL
+namespace WebStore.Services.InSQL
 {
     public class SqlOrderService : IOrderService
     {

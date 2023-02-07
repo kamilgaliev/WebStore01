@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using WebStore.Models;
+using WebStore.Domain.Models;
 
 namespace WebStore.Controllers
 {
@@ -11,6 +11,6 @@ namespace WebStore.Controllers
     {
         public IActionResult Index() => View();
 
-        public IActionResult NotFound() => View();
+
     }
 }

@@ -9,7 +9,7 @@ using WebStore.Domain;
 using WebStore.Domain.Entities;
 using WebStore.Domain.Entities.Orders;
 using WebStore.Infrastructure.Interfaces;
-using WebStore.Models;
+using WebStore.Domain.Models;
 
 namespace WebStore.Infrastructure.Services.InSQL
 {

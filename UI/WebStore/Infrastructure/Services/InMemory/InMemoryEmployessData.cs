@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using WebStore.Data;
 using WebStore.Infrastructure.Interfaces;
-using WebStore.Models;
+using WebStore.Domain.Models;
 
 namespace WebStore.Infrastructure.Services.InMemory
 {

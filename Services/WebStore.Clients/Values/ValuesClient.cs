@@ -8,13 +8,14 @@ using System.Net.Http.Json;
 using System.Text;
 using System.Threading.Tasks;
 using WebStore.Clients.Base;
+using WebStore.Interfaces;
 using WebStore.Interfaces.TestAPI;
 
 namespace WebStore.Clients.Values
 {
     public class ValuesClient : BaseClient, IValuesService
     {
-        public ValuesClient(IConfiguration Configuration) : base(Configuration, "api/values")
+        public ValuesClient(IConfiguration Configuration) : base(Configuration,WebAPI.TestWebApi)
         {
         }
 

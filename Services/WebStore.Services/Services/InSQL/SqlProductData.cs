@@ -10,6 +10,8 @@ using WebStore.Domain.Entities;
 using WebStore.Domain.Entities.Orders;
 using WebStore.Interfaces;
 using WebStore.Domain.Models;
+using WebStore.Domain.DTO;
+using WebStore.Services.Mapping;
 
 namespace WebStore.Services.InSQL
 {
@@ -42,18 +44,18 @@ namespace WebStore.Services.InSQL
             return true;
         }
 
-        public IEnumerable<Brand> GetBrands() => _db.Brands.Include(b => b.Products);
+        public IEnumerable<BrandDTO> GetBrands() => _db.Brands.Include(b => b.Products).ToDTO();
 
-        public IEnumerable<Brand> GetAllBrands() => _db.Brands.ToList();
+        public IEnumerable<BrandDTO> GetAllBrands() => _db.Brands.ToDTO().ToList();
 
-        public IEnumerable<Section> GetAllSection() => _db.Sections.ToList();
+        public IEnumerable<SectionDTO> GetAllSection() => _db.Sections.ToDTO().ToList();
 
-        public Product GetProductById(int id) => _db.Products
+        public ProductDTO GetProductById(int id) => _db.Products
             .Include(product => product.Brand)
             .Include(product => product.Section)
-            .FirstOrDefault(product => product.Id == id);
+            .FirstOrDefault(product => product.Id == id).ToDTO();
 
-        public IEnumerable<Product> GetProducts(ProductFilter filter = null)
+        public IEnumerable<ProductDTO> GetProducts(ProductFilter filter = null)
         {
             IQueryable<Product> query = _db.Products
                 .Include(product => product.Brand)
@@ -70,23 +72,24 @@ namespace WebStore.Services.InSQL
                     query = query.Where(b => b.BrandId == brand_id);
             }
 
-            return query;
+            return query.ToDTO();
         }
 
-        public IEnumerable<Section> GetSections() => _db.Sections.Include(s => s.Products);
+        public IEnumerable<SectionDTO> GetSections() => _db.Sections.Include(s => s.Products).ToDTO();
 
-        public void Update(Product product)
+        public void Update(ProductDTO product)
         {
             if (product is null) throw new ArgumentNullException(nameof(product));
             //if (_db.Products.Contains(product)) return;
 
-            var db_item = GetProductById(product.Id);
+            var db_item_find = GetProductById(product.Id);
+            var db_item = db_item_find.FromDTO();
             if (db_item is null) return;
 
             db_item.Id = product.Id;
             db_item.Name = product.Name;
-            db_item.BrandId = product.BrandId;
-            db_item.SectionId = product.SectionId;
+            db_item.BrandId = product.Brand.Id;
+            db_item.SectionId = product.Section.Id;
             db_item.ImageUrl = product.ImageUrl;
             db_item.Price = product.Price;
 

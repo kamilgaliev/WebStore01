@@ -28,14 +28,14 @@ namespace WebStore.Controllers
             {
                 SectionId = SectionId,
                 BrandId = BrandId,
-                Products = products.OrderBy(p => p.Order).ToView()
+                Products = products.OrderBy(p => p.Order).FromDTO().ToView()
             });
         }
 
         public IActionResult Details(int id)
         {
             var p = _ProductData.GetProductById(id);
-            return View(p.ToView());
+            return View(p.FromDTO().ToView());
         }
     }
 }

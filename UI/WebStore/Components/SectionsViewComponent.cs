@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using WebStore.Interfaces;
 using WebStore.Domain.ViewModels;
+using WebStore.Services.Mapping;
 
 namespace WebStore.Components
 {
@@ -16,7 +17,7 @@ namespace WebStore.Components
         {
             var sections = _ProductData.GetSections();
 
-            var parent_sections = sections.Where(s => s.ParentId is null);
+            var parent_sections = sections.Where(s => s.ParentId is null).FromDTO();
 
             var parent_sections_views = parent_sections.
                 Select(s => new SectionViewModel
@@ -31,7 +32,7 @@ namespace WebStore.Components
 
             foreach (var parent_section in parent_sections_views)
             {
-                var child = sections.Where(s => s.ParentId == parent_section.Id);
+                var child = sections.Where(s => s.ParentId == parent_section.Id).FromDTO();
 
                 foreach (var child_section in child)
                     parent_section.ChildSections.Add(new SectionViewModel

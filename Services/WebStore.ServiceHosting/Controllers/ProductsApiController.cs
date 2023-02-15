@@ -24,6 +24,9 @@ namespace WebStore.ServiceHosting.Controllers
         [HttpGet("brands")]
         public IEnumerable<BrandDTO> GetBrands() => _ProductData.GetBrands();
 
+        [HttpGet("brands/{id}")]
+        public BrandDTO GetBrandById(int id) => _ProductData.GetBrandById(id);
+
         [HttpGet("{id}")]
         public ProductDTO GetProductById(int id) => _ProductData.GetProductById(id);
 
@@ -33,10 +36,14 @@ namespace WebStore.ServiceHosting.Controllers
         [HttpGet("sections")]
         public IEnumerable<SectionDTO> GetSections() => _ProductData.GetSections();
 
+        [HttpGet("sections/{id}")]
+        public SectionDTO GetSectionById(int id) => _ProductData.GetSectionById(id);
+
         [HttpPut]
         public void Update(ProductDTO product) => _ProductData.Update(product);
 
         [HttpDelete("{id}")]
         public bool Delete(int id) => _ProductData.Delete(id);
+
     }
 }

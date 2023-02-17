@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using WebStore.Domain;
+using WebStore.Domain.DTO;
 using WebStore.Domain.Entities;
 using WebStore.Domain.Models;
 
@@ -7,19 +8,23 @@ namespace WebStore.Interfaces
 {
     public interface IProductData
     {
-        IEnumerable<Section> GetSections();
+        IEnumerable<SectionDTO> GetSections();
 
-        IEnumerable<Brand> GetBrands();
+        SectionDTO GetSectionById(int id);
 
-        IEnumerable<Brand> GetAllBrands();
+        IEnumerable<BrandDTO> GetBrands();
 
-        IEnumerable<Section> GetAllSection();
+        BrandDTO GetBrandById(int id);
 
-        IEnumerable<Product> GetProducts(ProductFilter filter = null);
+        IEnumerable<BrandDTO> GetAllBrands();
 
-        Product GetProductById(int id);
+        IEnumerable<SectionDTO> GetAllSection();
 
-        void Update(Product product);
+        IEnumerable<ProductDTO> GetProducts(ProductFilter filter = null);
+
+        ProductDTO GetProductById(int id);
+
+        void Update(ProductDTO product);
 
         bool Delete(int id);
     }

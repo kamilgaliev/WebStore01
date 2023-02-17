@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using WebStore.Interfaces;
 using WebStore.Domain.ViewModels;
+using WebStore.Domain.DTO;
+using System.Linq;
 
 namespace WebStore.Controllers
 {
@@ -48,11 +50,24 @@ namespace WebStore.Controllers
                     Order = OrderModel,
                 });
 
-            var order = await OrderService.CreateOrder(
-                User.Identity!.Name,
-                _CartService.GetViewModel(),
-                OrderModel
-                );
+            //var order = await OrderService.CreateOrder(
+            //    User.Identity!.Name,
+            //    _CartService.GetViewModel(),
+            //    OrderModel
+            //    );
+
+            var order_model = new CreateOrderModel
+            {
+                Order = OrderModel,
+                Items = _CartService.GetViewModel().Items.Select(item => new OrderItemDTO
+                {
+                    Id = item.Product.Id,
+                    Price = item.Product.Price,
+                    Quantity = item.Quantity,
+                }).ToList(),
+            };
+
+            var order = await OrderService.CreateOrder(User.Identity!.Name, order_model);
 
             _CartService.Clear();
 

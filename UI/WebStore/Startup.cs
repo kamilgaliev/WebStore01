@@ -16,6 +16,9 @@ using WebStore.Services.InMemory;
 using WebStore.Services.InSQL;
 using WebStore.Interfaces.TestAPI;
 using WebStore.Clients.Values;
+using WebStore.Clients.Employees;
+using WebStore.Clients.Products;
+using WebStore.Clients.Orders;
 
 namespace WebStore
 {
@@ -37,10 +40,13 @@ namespace WebStore
 
             services.AddTransient<WebStoreDbInitializer>();
 
-            services.AddTransient<IEmployeesData, InMemoryEmployessData>();
+            //services.AddTransient<IEmployeesData, InMemoryEmployessData>();
+
+            services.AddTransient<IEmployeesData, EmployeesClient>();
 
             services.AddTransient<ICartService, InCookiesCartService>();
-            services.AddTransient<IOrderService, SqlOrderService>();
+            //services.AddTransient<IOrderService, SqlOrderService>();
+            services.AddTransient<IOrderService, OrdersClient>();
 
             services.AddTransient<IValuesService,ValuesClient>();
 
@@ -80,7 +86,8 @@ namespace WebStore
             });
 
             //services.AddTransient<IProductData, InMemoryProductData>();
-            services.AddTransient<IProductData, SqlProductData>();
+            //services.AddTransient<IProductData, SqlProductData>();
+            services.AddTransient<IProductData, ProductsClient>();
 
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
         }

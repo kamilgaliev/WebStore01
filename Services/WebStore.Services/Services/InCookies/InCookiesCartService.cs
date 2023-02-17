@@ -97,7 +97,7 @@ namespace WebStore.Services.InCookies
                 Ids = Cart.Items.Select(items => items.ProductId).ToArray()
             });
 
-            var productViewModel = products.ToView().ToDictionary(p => p.Id);
+            var productViewModel = products.FromDTO().ToView().ToDictionary(p => p.Id);
 
             return new CartViewModel
             {

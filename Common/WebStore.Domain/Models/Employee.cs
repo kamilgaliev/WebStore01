@@ -16,5 +16,10 @@ namespace WebStore.Domain.Models
         public string Patronymic { get; set; }
 
         public int Age { get; set; }
+
+        public override string ToString()
+        {
+            return $"{LastName} {FirstName} {Patronymic} {Age} лет";
+        }
     }
 }

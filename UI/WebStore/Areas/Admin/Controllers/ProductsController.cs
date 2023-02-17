@@ -21,7 +21,7 @@ namespace WebStore.Areas.Admin.Controllers
         public ProductsController(IProductData ProductData) => _ProductData = ProductData;
         public IActionResult Index()
         {
-            return View(_ProductData.GetProducts());
+            return View(_ProductData.GetProducts().FromDTO());
         }
 
         public IActionResult Edit(int id)
@@ -39,8 +39,8 @@ namespace WebStore.Areas.Admin.Controllers
                 ImageUrl = product.ImageUrl,
                 Price = product.Price,
                 SectionId = product.Section.Id,
-                BrandItems = brands,
-                SectionItems = sections,
+                BrandItems = brands.FromDTO(),
+                SectionItems = sections.FromDTO(),
             };
             return View(product_item);
         }
@@ -64,7 +64,7 @@ namespace WebStore.Areas.Admin.Controllers
 
             if (product.Id > 0)
             {
-                _ProductData.Update(product);
+                _ProductData.Update(product.ToDTO());
               
             }
 
@@ -73,7 +73,7 @@ namespace WebStore.Areas.Admin.Controllers
 
         public IActionResult Delete(int id)
         {
-            var product = _ProductData.GetProductById(id);
+            var product = _ProductData.GetProductById(id).FromDTO();
             if (product is null) return NotFound();
             return View(product.ToView());
         }

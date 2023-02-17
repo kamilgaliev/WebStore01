@@ -2,10 +2,11 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
+using WebStore.Interfaces;
 
 namespace WebStore.ServiceHosting.Controllers
 {
-    [Route("api/[controller]")]
+    [Route(WebAPI.TestWebApi)]
     [ApiController]
     public class ValuesController : ControllerBase
     {
